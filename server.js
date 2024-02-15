@@ -1,7 +1,7 @@
-import express, { response } from "express";
+import express from "express";
 import cors from "cors";
 import mysql from "mysql";
-import http, { request } from "http";
+import http from "http";
 import cookieParser from "cookie-parser"; // Import cookie-parser
 import nodemailer from "nodemailer";
 
@@ -114,7 +114,7 @@ app.post("/api/create/contact", (request, response) => {
 //Method : DELETE
 
 app.delete("/api/delete/contact/:id", (request, response) => {
-  const sql_query =` DELETE FROM vcentry_contact WHERE id=${request.params.id}`;
+  const sql_query = `DELETE FROM vcentry_contact WHERE id=${request.params.id}`;
   connection.query(sql_query, (error, result) => {
     if(error){
       response.status(500).send(error);
