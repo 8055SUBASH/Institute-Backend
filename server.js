@@ -23,13 +23,6 @@ const connection = mysql.createConnection({
     database: "vcentry"
 });
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail', // e.g., 'gmail', 'yahoo', etc.
-  auth: {
-      user: '11199a225@kanchiunv.ac.in',
-      pass: 'subash8055',
-  },
-});
 
 connection.connect((error) => {
     if (error) {
@@ -115,6 +108,21 @@ app.post("/api/create/contact", (request, response) => {
 
 app.delete("/api/delete/contact/:id", (request, response) => {
   const sql_query = `DELETE FROM vcentry_contact WHERE id=${request.params.id}`;
+  connection.query(sql_query, (error, result) => {
+    if(error){
+      response.status(500).send(error);
+    }
+    else{
+      response.status(200).send("Deleted successfully");
+    }
+  })
+})
+//-----------------------------------------------------------------------------------------------------------
+//URL - http://localhost:5000/api/delete/review
+//Method : DELETE
+
+app.delete("/api/delete/review/:id", (request, response) => {
+  const sql_query = `DELETE FROM vcentry_review WHERE id=${request.params.id}`;
   connection.query(sql_query, (error, result) => {
     if(error){
       response.status(500).send(error);
