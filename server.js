@@ -16,11 +16,18 @@ app.use(cors({
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser()); // Use cookie-parser middleware
 
+// const connection = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "",
+//     database: "vcentry"
+// });
 const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "vcentry"
+  host: "db4free.net",
+  user: "vcentry",
+  password: "test@123",
+  database: "travelix",
+  port: 3306
 });
 
 
@@ -75,7 +82,7 @@ app.post("/api/create/review", (request, response) => {
 
     connection.query(sql_query, (error, result) => {
         if (error) {
-            response.status(500).send(error);
+            response.status(500).send("ineternal server error");
         }
         else {
             response.status(200).send("Review has been updated");
