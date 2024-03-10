@@ -3,7 +3,7 @@ import cors from "cors";
 import mysql from "mysql";
 import http from "http";
 import cookieParser from "cookie-parser"; // Import cookie-parser
-import nodemailer from "nodemailer";
+
 
 const app = express();
 const server = http.createServer(app);
@@ -30,19 +30,16 @@ const connection = mysql.createConnection({
   port: 3306
 });
 
-
 connection.connect((error) => {
-    if (error) {
-      throw error;
-    }
-    else {
-      console.log("MYSQL Server has been connected");
-    }
-  })
+  if (error) {
+    throw error;
+  }
+  else {
+    console.log("MYSQL Server has been connected");
+  }
+})
 
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/read/review - this method is used in review frontend page
-// Method : GET
+// --------------------------review-Api-GET--------------------------------
 
 app.get("/api/read/review", (request, response) => {
   const sql_query = `SELECT * FROM vcentry_review`;
@@ -54,10 +51,9 @@ app.get("/api/read/review", (request, response) => {
       response.status(200).send(result);
     }
   })
-})  
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/read/contact - this method is used in contact frontend page
-// Method : GET
+})
+
+// -------------------------contact-Api-GET------------------------------------
 
 app.get("/api/read/contact", (request, response) => {
   const sql_query = `SELECT * FROM vcentry_contact`;
@@ -69,72 +65,64 @@ app.get("/api/read/contact", (request, response) => {
       response.status(200).send(result);
     }
   })
-})  
+})
 
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/create/review - this method is used in review frontend page
-// Method : POST
+// --------------------------review-Api-POST------------------------------------
 
 app.post("/api/create/review", (request, response) => {
 
-    const sql_query = `INSERT INTO vcentry_review (Name, Email, Course, Message) 
+  const sql_query = `INSERT INTO vcentry_review (Name, Email, Course, Message) 
     VALUES ('${request.body.Name}', '${request.body.Email}', '${request.body.Course}', '${request.body.Message}')`;
 
-    connection.query(sql_query, (error, result) => {
-        if (error) {
-            response.status(500).send("ineternal server error");
-        }
-        else {
-            response.status(200).send("Review has been updated");
-        }
-    })
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send("Review has been updated");
+    }
+  })
 })
 
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/submit/contact - this method is used in contact frontend page
-// Method : POST
+// --------------------------contact-Api-POST--------------------------------------
 
 app.post("/api/create/contact", (request, response) => {
 
 
   const sql_query = `INSERT INTO vcentry_contact (username, useremail, userphoneno, usercourse, usermessage)
   VALUES('${request.body.username}', '${request.body.useremail}', '${request.body.userphoneno}', '${request.body.usercourse}', '${request.body.usermessage}')`;
-   connection.query(sql_query, (error, result) => {
-        if (error) {
-            response.status(500).send(error);
-        }
-        else {
-            response.status(200).send("Contact Form Sent");
-        }
-    })
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send("Contact Form Sent");
+    }
+  })
 })
 
-//-----------------------------------------------------------------------------------------------------------
-//URL - http://localhost:5000/api/delete/contact
-//Method : DELETE
+// --------------------------------contact-API-Delete-------------------------------
 
 app.delete("/api/delete/contact/:id", (request, response) => {
   const sql_query = `DELETE FROM vcentry_contact WHERE id=${request.params.id}`;
   connection.query(sql_query, (error, result) => {
-    if(error){
+    if (error) {
       response.status(500).send(error);
     }
-    else{
+    else {
       response.status(200).send("Deleted successfully");
     }
   })
 })
-//-----------------------------------------------------------------------------------------------------------
-//URL - http://localhost:5000/api/delete/review
-//Method : DELETE
+// -------------------------------review-API-Delete-------------------------------
 
 app.delete("/api/delete/review/:id", (request, response) => {
   const sql_query = `DELETE FROM vcentry_review WHERE id=${request.params.id}`;
   connection.query(sql_query, (error, result) => {
-    if(error){
+    if (error) {
       response.status(500).send(error);
     }
-    else{
+    else {
       response.status(200).send("Deleted successfully");
     }
   })
@@ -148,17 +136,17 @@ app.delete("/api/delete/review/:id", (request, response) => {
 
 
 
-app.post("/api/create/courses",(request,response) => {
-    const sql_query = `INSERT INTO vcentry_courses (coursesFiled , coursesName , coursesDetail , coursesImage) VALUES ('${request.body.coursesFiled}', '${request.body.coursesName}', '${request.body.coursesDetail}', '${request.body.coursesImage}')`;
+app.post("/api/create/courses", (request, response) => {
+  const sql_query = `INSERT INTO vcentry_courses (coursesFiled , coursesName , coursesDetail , coursesImage) VALUES ('${request.body.coursesFiled}', '${request.body.coursesName}', '${request.body.coursesDetail}', '${request.body.coursesImage}')`;
 
-    connection.query(sql_query,(error, result) => {
-        if(error){
-            response.status(500).send(error);
-        }
-        else{
-            response.status(200).send("detail has been uploaded");
-        }
-    })
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send("detail has been uploaded");
+    }
+  })
 });
 
 
@@ -167,17 +155,17 @@ app.post("/api/create/courses",(request,response) => {
 // --------------------------trend-courses-Api-POST----------------------------
 
 
-app.post("/api/create/trend",(request,response) => {
-    const sql_query = `INSERT INTO vcentry_trend_courses (coursesFiled , coursesName , coursesDetail , coursesImage) VALUES ('${request.body.coursesFiled}', '${request.body.coursesName}', '${request.body.coursesDetail}', '${request.body.coursesImage}')`;
+app.post("/api/create/trend", (request, response) => {
+  const sql_query = `INSERT INTO vcentry_trend_courses (coursesFiled , coursesName , coursesDetail , coursesImage) VALUES ('${request.body.coursesFiled}', '${request.body.coursesName}', '${request.body.coursesDetail}', '${request.body.coursesImage}')`;
 
-    connection.query(sql_query,(error, result) => {
-        if(error){
-            response.status(500).send(error);
-        }
-        else{
-            response.status(200).send("detail has been uploaded");
-        }
-    })
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send("detail has been uploaded");
+    }
+  })
 });
 
 
@@ -186,15 +174,15 @@ app.post("/api/create/trend",(request,response) => {
 
 
 app.get("/api/list/courses", (request, response) => {
-    const sql_query = `SELECT * FROM vcentry_courses` ;
-    connection.query(sql_query,(error, result) => {
-        if(error){
-            response.status(500).send(error);
-        }
-        else{
-            response.status(200).send(result);
-        }
-    })
+  const sql_query = `SELECT * FROM vcentry_courses`;
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send(result);
+    }
+  })
 });
 
 
@@ -204,30 +192,30 @@ app.get("/api/list/courses", (request, response) => {
 
 
 app.get("/api/list/trend", (request, response) => {
-    const sql_query = `SELECT * FROM vcentry_trend_courses` ;
-    connection.query(sql_query,(error, result) => {
-        if(error){
-            response.status(500).send(error);
-        }
-        else{
-            response.status(200).send(result);
-        }
-    })
+  const sql_query = `SELECT * FROM vcentry_trend_courses`;
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send(result);
+    }
+  })
 });
 
 
 // --------------------------------courses-API-Delete-------------------------------
 
 app.delete("/api/delete/courses/:id", (request, response) => {
-    const sql_query = `DELETE FROM vcentry_courses WHERE id=${request.params.id}`;
-    connection.query(sql_query,(error, result) => {
-        if(error){
-            response.status(500).send(error);
-        }
-        else{
-            response.status(200).send("Deleted Successfully");
-        }
-    })
+  const sql_query = `DELETE FROM vcentry_courses WHERE id=${request.params.id}`;
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send("Deleted Successfully");
+    }
+  })
 });
 
 
@@ -236,19 +224,19 @@ app.delete("/api/delete/courses/:id", (request, response) => {
 // --------------------------------trend-API-Delete-------------------------------
 
 app.delete("/api/delete/trend/:id", (request, response) => {
-    
-    const sql_query = `DELETE FROM vcentry_trend_courses WHERE id=${request.params.id}`;
-    
-    connection.query(sql_query,(error, result) => {
-        if(error){
-            response.status(500).send(error);
-        }
-        else{
-            response.status(200).send("Deleted Successfully");
-        }
-    })
+
+  const sql_query = `DELETE FROM vcentry_trend_courses WHERE id=${request.params.id}`;
+
+  connection.query(sql_query, (error, result) => {
+    if (error) {
+      response.status(500).send(error);
+    }
+    else {
+      response.status(200).send("Deleted Successfully");
+    }
+  })
 });
- 
+
 
 
 
