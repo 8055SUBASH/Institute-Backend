@@ -3,7 +3,7 @@ import cors from "cors";
 import mysql from "mysql";
 import http from "http";
 import cookieParser from "cookie-parser"; // Import cookie-parser
-import nodemailer from "nodemailer";
+
 
 const app = express();
 const server = http.createServer(app);
@@ -33,9 +33,7 @@ connection.connect((error) => {
     }
   })
 
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/read/review - this method is used in review frontend page
-// Method : GET
+// --------------------------review-Api-GET--------------------------------
 
 app.get("/api/read/review", (request, response) => {
   const sql_query = `SELECT * FROM vcentry_review`;
@@ -48,9 +46,8 @@ app.get("/api/read/review", (request, response) => {
     }
   })
 })  
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/read/contact - this method is used in contact frontend page
-// Method : GET
+ 
+// -------------------------contact-Api-GET------------------------------------
 
 app.get("/api/read/contact", (request, response) => {
   const sql_query = `SELECT * FROM vcentry_contact`;
@@ -64,9 +61,7 @@ app.get("/api/read/contact", (request, response) => {
   })
 })  
 
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/create/review - this method is used in review frontend page
-// Method : POST
+// --------------------------review-Api-POST------------------------------------
 
 app.post("/api/create/review", (request, response) => {
 
@@ -83,9 +78,7 @@ app.post("/api/create/review", (request, response) => {
     })
 })
 
-// ---------------------------------------------------------------------------------------------------------
-// http://localhost:5000/api/submit/contact - this method is used in contact frontend page
-// Method : POST
+// --------------------------contact-Api-POST--------------------------------------
 
 app.post("/api/create/contact", (request, response) => {
 
@@ -102,9 +95,7 @@ app.post("/api/create/contact", (request, response) => {
     })
 })
 
-//-----------------------------------------------------------------------------------------------------------
-//URL - http://localhost:5000/api/delete/contact
-//Method : DELETE
+// --------------------------------contact-API-Delete-------------------------------
 
 app.delete("/api/delete/contact/:id", (request, response) => {
   const sql_query = `DELETE FROM vcentry_contact WHERE id=${request.params.id}`;
@@ -117,9 +108,7 @@ app.delete("/api/delete/contact/:id", (request, response) => {
     }
   })
 })
-//-----------------------------------------------------------------------------------------------------------
-//URL - http://localhost:5000/api/delete/review
-//Method : DELETE
+// -------------------------------review-API-Delete-------------------------------
 
 app.delete("/api/delete/review/:id", (request, response) => {
   const sql_query = `DELETE FROM vcentry_review WHERE id=${request.params.id}`;
