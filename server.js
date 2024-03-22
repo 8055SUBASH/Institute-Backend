@@ -23,10 +23,10 @@ app.use(cookieParser()); // Use cookie-parser middleware
 //     database: "vcentry"
 // });
 const connection = mysql.createConnection({
-  host: "db4free.net",
-  user: "vcentry",
-  password: "test@123",
-  database: "travelix",
+  host: "sql6.freesqldatabase.com",
+  user: "sql6693375",
+  password: "8QLhMj2V39",
+  database: "sql6693375",
   port: 3306
 });
 
